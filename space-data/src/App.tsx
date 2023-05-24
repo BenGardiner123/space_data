@@ -63,13 +63,19 @@ export default function App() {
       name: solarSystem.name,
       age: solarSystem.age,
     },
+    // remember .map() returns a new array
     planets: solarSystem.planets.map((planet) => ({
       name: planet.name,
       distance_from_sun: planet.distance_from_sun,
-      moons: planet.moons.map((moon) => moon.name).join(", "),
+      // only include moons that are further than 10 units away
+      moons: planet.moons
+        .filter((moon) => moon.distance_from_planet > 10)
+        // create a new array of just the names
+        .map((moon) => moon.name)
+        .join(", "),
     })),
     black_holes: solarSystem.black_holes.map((blackHole) => ({
-      name: blackHole.name,
+      name: blackHole.name.toString().toUpperCase(),
       mass: blackHole.mass,
       distance_from_earth: blackHole.distance_from_earth,
       discovery_date: blackHole.discovery_date,
@@ -77,7 +83,7 @@ export default function App() {
   };
 
   const handleExportClick = () => {
-    const output = writeFile(solarSystem);
+    const output = writeFile(customSpaceDataOutputObject);
   };
 
   return (
